@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -113,13 +114,29 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
 
-            if (convertView == null){
-                convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.item, parent, false);
+                holder = new ViewHolder();
+                holder.text = (TextView) convertView.findViewById(android.R.id.text1);
+                holder.color = convertView.findViewById(R.id.color);
+                convertView.setTag(holder);
+            }else {
+                holder = (ViewHolder) convertView.getTag();
+
             }
-            TextView mainView = (TextView) convertView;
-            mainView.setBackgroundColor(colors[position]);
-            return mainView;
+
+
+            final Integer color = colors [position];
+            holder.color.setBackgroundColor(color);
+            holder.text.setText(color.toString());
+
+            return convertView;
+        }
+        private static class ViewHolder{
+            TextView text;
+            View color;
         }
     }
 }
