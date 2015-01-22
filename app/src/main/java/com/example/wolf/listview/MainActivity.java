@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ColorsAdapter adapter = (ColorsAdapter) parent.getAdapter();
                 adapter.setRandomColors(position);
+                adapter.notifyDataSetChanged();
             }
         });
 
