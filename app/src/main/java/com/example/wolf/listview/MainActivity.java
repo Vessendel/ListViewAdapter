@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +25,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(new ColorsAdapter(this));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ColorsAdapter adapter = (ColorsAdapter) parent.getAdapter();
+                adapter.setRandomColors(position);
+            }
+        });
 
 
     }
@@ -56,17 +64,18 @@ public class MainActivity extends ActionBarActivity {
         private Integer[] colors;
 
         private LayoutInflater mInflater;
+        private final Random mRandom;
 
 
         private ColorsAdapter(Context context){
 
             mInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-            Random random = new Random();
+            mRandom = new Random();
             colors = new Integer[1000];
             for (int i = 0; i < colors.length; i++) {
-                colors[i] = Color.rgb(random.nextInt(MAX_ELEMENTS),
-                        random.nextInt(MAX_ELEMENTS),
-                                random.nextInt(MAX_ELEMENTS));
+                colors[i] = Color.rgb(mRandom.nextInt(MAX_ELEMENTS),
+                        mRandom.nextInt(MAX_ELEMENTS),
+                        mRandom.nextInt(MAX_ELEMENTS));
             }
 
         }
@@ -84,7 +93,22 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public long getItemId(int position) {
             return position;
+
         }
+
+        public void setColors(int position, Integer newColor){
+            colors[position] = newColor;
+        }
+
+        public void setRandomColors(int position){
+
+            setColors(position,Color.rgb(mRandom.nextInt(MAX_ELEMENTS),
+                    mRandom.nextInt(MAX_ELEMENTS),
+                    mRandom.nextInt(MAX_ELEMENTS)));
+        }
+
+
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
